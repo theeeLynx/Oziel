@@ -3,6 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0e0e10">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Oziel &amp; Brother">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png">
 <title>Database Customer Oziel and Brother</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
@@ -77,6 +84,7 @@ button.del{color:var(--bad)}
     <div class="top" id="top" hidden>
       <div class="pill"><span class="dot" id="dot"></span><span id="stx">Menghubungkan…</span></div>
       <div class="pill">Total customer <b id="tot">0</b></div>
+      <button class="sec" id="inst" hidden>Pasang aplikasi</button>
     </div>
   </header>
 
@@ -199,6 +207,13 @@ if (firebaseConfig.apiKey.startsWith("ISI_")) {
     }, err => setSt("off", "Akses ditolak: " + err.code)));
   });
 }
+</script>
+<script>
+if ("serviceWorker" in navigator) addEventListener("load", function(){ navigator.serviceWorker.register("sw.js").catch(function(){}); });
+var dp=null;
+addEventListener("beforeinstallprompt", function(e){ e.preventDefault(); dp=e; var b=document.getElementById("inst"); if(b) b.hidden=false; });
+document.getElementById("inst").addEventListener("click", function(){ if(!dp) return; dp.prompt(); dp.userChoice.finally(function(){ dp=null; document.getElementById("inst").hidden=true; }); });
+addEventListener("appinstalled", function(){ document.getElementById("inst").hidden=true; });
 </script>
 </body>
 </html>
